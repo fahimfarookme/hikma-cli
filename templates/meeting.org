@@ -1,0 +1,48 @@
+#+title: Meeting: %^{Title}
+#+filetags: :meeting:minutes:
+#+created: %<%Y-%m-%d %H:%M:%S>
+
+:PROPERTIES:
+:TYPE: meeting
+:DATE: %<%Y-%m-%d %H:%M>
+:ATTENDEES: %^{Attendees}
+:LOCATION: %^{Location}
+:CONCERN: %{concern}
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:UPDATED: %<%Y-%m-%d %H:%M:%S>
+:END:
+
+* Purpose
+%?
+
+* Preparation
+- 
+- 
+
+* Expected Outcome
+
+* Agenda
+
+* Minutes
+-
+- 
+
+* Action Items
+** TODO First action item
+DEADLINE: %^t
+:PROPERTIES:
+:CREATED: %U
+:END:
+
+** TODO Second action item
+DEADLINE: %^t
+:PROPERTIES:
+:CREATED: %U
+:END:
+
+* Notes
+- 
+
+* Next Steps
+- Next meeting: 
+- Key deadlines: 

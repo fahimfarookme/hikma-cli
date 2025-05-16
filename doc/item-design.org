@@ -1,0 +1,66 @@
+* Hikma CLI Design Principles
+
+The Hikma CLI is built on following design principles that make it flexible for integrating with editor environments.
+
+** 1. Clear Separation of Concerns
+The CLI architecture separates three fundamental operations:
+
+- *Path determination*:  
+  `hikma item path <item>`  
+  Decides where files should live based on item type and context.
+
+- *Content preparation*:  
+  `hikma item content <item> [--variable value]`  
+  Gets template content with basic variables substituted.
+
+- *File creation*:  
+  `hikma item create <item> [--variable value]`  
+  Creates the physical file (optional, as editors can handle this).
+
+This separation enables maximum flexibility where editors can use just the path and content commands to handle file creation themselves, maintaining their own file handling processes.
+
+** 2. Variable Substitution Strategy
+The Hikma CLI processes only a specific subset of template variables that are specific to Hikma.
+
+- *Context variables* (`{{__category__}}`, `{{__concern__}}`, etc.) which the CLI determines automatically.
+- *Basic timestamps* (`{{__date__}}`, `{{__date_short__}}`, etc.) for consistency.
+- *Command-line variables* (passed via `--variable value`) for explicit customization.
+
+This approach purposefully leaves other variable types (like `%?` in org-capture or `${var}` in other systems) untouched, allowing editors to apply their own templating on top of the Hikma prepared content.
+
+** 3. Context Awareness
+The Hikma CLI automatically detects the current context (category/concern) based on the working directory, without requiring this information to be specified with each command. This maintains consistency regardless of from where the files are created.
+
+** 4. Configuration-Driven Organization
+File organization rules are externalized in configuration, allowing customization without changing code.  
+The default context (category/concern) configuration follows PARA method, but can be tailored to individual workflows.
+
+** 5. Editor Agnosticism
+The Hikma CLI is intentionally designed to work with any editor or environment, providing a common organizational layer while allowing editors to add their own capabilities on top.
+
+* How Editors Can Wrap the Hikma
+
+** Basic Integration
+Call Hikma CLI commands and process results:
+
+#+begin_src python
+path = run("hikma item path note")
+content = run("hikma item content note --title 'My Note'")
+save_file(path, process_editor_variables(content))
+#+end_src
+
+** Template Enhancement
+Add editor-specific template variable processing:
+
+#+begin_src python
+template = run("hikma item content note")
+enhanced_template = add_editor_template_variables(template)
+#+end_src
+
+** Full Capture System
+Build a complete capture experience on top of Hikma:
+
+1. Get path and content from Hikma.
+2. Apply editor-specific template processing.
+3. Create the file using editor's file handling.
+4. Add editor-specific features (e.g., org-roam IDs).

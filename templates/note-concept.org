@@ -1,0 +1,25 @@
+#+title: ${title}
+#+filetags: :note:concept:
+#+created: %<%Y-%m-%d %H:%M:%S>
+
+:PROPERTIES:
+:TYPE: %^{Type|permanent|literature|reference}
+:AUTHORS: %^{Authors}
+:ROAM_REFS: %(init/org-roam-capture-refs)
+:STATUS: %^{Status|in-progress|completed|reviewed}
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:UPDATED: %<%Y-%m-%d %H:%M:%S>
+:END:
+
+* ${title}
+
+
+* Summary
+
+* Questions
+
+* Thoughts
+
+* References
+
+* Context

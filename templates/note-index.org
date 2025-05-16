@@ -1,0 +1,17 @@
+#+title: ${title}
+#+filetags: :note:index:
+#+created: %<%Y-%m-%d %H:%M:%S>
+
+:PROPERTIES:
+:TYPE: index
+:AUTHORS: Fahim Farook
+:STATUS: %^{Status|in-progress|completed|reviewed}
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:UPDATED: %<%Y-%m-%d %H:%M:%S>
+:END:
+
+* ${title}
+
+* References
+
+* Context

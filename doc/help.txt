@@ -1,0 +1,39 @@
+
+-----------------------------------------------------------------------------------
+Hikma (Wisdom in Arabic) - A system for organzing knowledge and digital information
+-----------------------------------------------------------------------------------
+
+Usage: hiqma <command> <category> <name> [options]
+
+Commands:
+  create <category> <name>         Create a new item in the specified category
+  delete <category> <name>         Delete an item from the specified category
+  archive <category> <name>         Backup an item in the specified category
+  mv <src_category> <name> <dest_category>  Move an item between categories
+  
+  submodule create [<name>] <repo_url>      Create a submodule in the current directory
+  submodule delete [<name>]                 Delete a submodule from the current directory
+  submodule backup [<name>]                 Backup a submodule in the current directory
+  
+  workspace create <name>          Create a new workspace (remote repository)
+  workspace delete <name>          Delete a workspace
+  workspace backup <name>          Backup a workspace
+  
+  init                             Initialize HIQMA repository
+  init-concern                     Initialize a concern from env.properties
+  backup-all                       Backup the entire HIQMA repository
+  
+  help                             Show this help
+
+Categories:
+  projects                         Active projects
+  domains                          Domain-specific knowledge
+  archive                          Archived items
+  resource                         Resources (shorthand for archive/resources)
+
+Examples:
+  hiqma create projects my-project      Create a new project
+  hiqma backup domains programming      Backup a domain
+  hiqma mv projects old-project archive Move a project to archive
+  hiqma submodule create https://github.com/user/repo.git   Create a submodule
+  hiqma workspace create my-workspace   Create a new workspace

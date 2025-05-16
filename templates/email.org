@@ -1,0 +1,20 @@
+#+title: Email: %^{Subject}
+#+filetags: :email:
+#+date: %<%Y-%m-%d>
+
+:PROPERTIES:
+:TYPE: email
+:SUBJECT: %\1
+:FROM: %^{From}
+:TO: %^{To}
+:DATE_SENT: %^{Date|%<%Y-%m-%d %H:%M>}
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:UPDATED: %<%Y-%m-%d %H:%M:%S>
+:END:
+
+* Body
+%?
+
+
+* Attachments
+- 

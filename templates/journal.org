@@ -1,0 +1,33 @@
+#+title: Daily: %<%Y-%m-%d>
+#+filetags: :daily:
+#+date: %<%Y-%m-%d>
+
+:PROPERTIES:
+:TYPE: daily
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:UPDATED: %<%Y-%m-%d %H:%M:%S>
+:END:
+
+* %<%A, %B %d, %Y>
+
+* Planning
+%?
+
+** Today's Focus
+- 
+
+** Top 3 Tasks
+1. 
+2. 
+3. 
+
+* Tasks
+** TODO 
+
+* Notes
+
+* Thoughts & Reflections
+- 
+
+* Tomorrow's Priorities
+-

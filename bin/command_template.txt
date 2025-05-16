@@ -1,0 +1,24 @@
+# Command template file
+# Format: regex_pattern:handler_function
+# Variables are the capture groups that will be passed to the handler in the order they are captured by the regex
+
+# Help commands
+^(help|-h|--help)$:handle_help
+
+# Initialize Hikma in the current directory
+^init:handle_init
+
+# Basic operations on categories
+^concern create ([^ ]+) ([^ ]+):handle_concern_create
+^concern delete ([^ ]+) ([^ ]+):handle_concern_delete
+^concern archive ([^ ]+) ([^ ]+):handle_concern_archive
+^concern mv ([^ ]+) ([^ ]+) ([^ ]+):handle_concern_mv
+
+# Submodule operations inside a category:name
+^submodule create ([^ ]+):handle_submodule_create
+^submodule delete ([^ ]+):handle_submodule_delete
+
+# Item management commands
+^item path ([^ ]+)$:handle_item_path
+^item content ([^ ]+) (.*)$:handle_item_content
+^item create ([^ ]+) (.*)$:handle_item_create

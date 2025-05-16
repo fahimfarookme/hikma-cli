@@ -1,0 +1,13 @@
+* TODO %^{Task}
+
+:PROPERTIES:
+:CREATED: %<%Y-%m-%d %H:%M:%S>
+:LOCATION: %a
+:CONCERN: %{concern}
+:END:
+
+%?
+
+%i
+%a
+
