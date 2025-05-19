@@ -7,7 +7,7 @@ declare -Agx command_template
 
 # Load modules with dependency management
 load_modules() {
-    local lib_dir="${hikma_script_root}/lib"
+    local lib_dir="${hikma_script_root}/libs"
     
     # Define ordered dependencies
     local -a ordered_deps=(

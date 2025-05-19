@@ -22,7 +22,7 @@ create_dirs() {
     declare -A configs
     read_props_to_array "${config_template_file}" configs
 
-    local root_template="$(get_script_dir)/templates/hikma_root"
+    local root_template="$(get_script_dir)/template/hikma_root"
     if [[ ! -d "$root_template" ]]; then
         log_message "Missing root template at ${root_template}" "error"
         return ${hikma_code_illegal_state}

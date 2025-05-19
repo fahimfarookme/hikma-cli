@@ -84,6 +84,11 @@ get_date() {
     return 0
 }
 
+# Get the default template dir
+get_default_template_dir() {
+    echo "${hikma_script_root}/template"
+}
+
 
 # Substitute variables in a string
 # $1: Template string with placeholders

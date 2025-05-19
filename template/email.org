@@ -1,6 +1,6 @@
 #+title: Email: %^{Subject}
 #+filetags: :email:
-#+date: %<%Y-%m-%d>
+#+created: %<%Y-%m-%d %H:%M:%S>
 
 :PROPERTIES:
 :TYPE: email

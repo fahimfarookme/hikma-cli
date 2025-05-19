@@ -46,7 +46,7 @@ init_concern() {
     local concern="$2"
     local concern_path="$3"
     local current_date=$(date +"%Y-%m-%d %H:%M:%S")
-    local template_path="${hikma_script_root}/templates/${category}"
+    local template_path="${hikma_script_root}/template/${category}"
 
     if [[ ! -d "${template_path}" ]]; then
         log_message "Template ${template_path} does not exist." "error"

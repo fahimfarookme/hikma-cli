@@ -2,9 +2,9 @@
 
 # Filename genrator functions (configured in config) accept single or no argument
 
-declare extention_format="$(required_config "hikma.formats.document"})"
-declare date_time_format="$(required_config "hikma.formats.date_time"})"
-declare date_format="$(required_config "hikma.formats.date"})"
+declare extention_format="$(required_config "hikma.formats.document")"
+declare date_time_format="$(required_config "hikma.formats.date_time")"
+declare date_format="$(required_config "hikma.formats.date")"
 
 # Generate slug from input text
 # $1 - string for which slug to be created

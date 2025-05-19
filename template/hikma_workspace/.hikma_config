@@ -1,0 +1,49 @@
+hikma.root=$HOME/hikma
+
+hikma.variables.current_context=get_current_context
+hikma.variables.current_category=get_current_category
+hikma.variables.current_concern=get_current_concern
+hikma.variables.current_dir=get_current_dir
+hikma.variables.date_time=get_date_time
+hikma.variables.date=get_date
+hikma.variables.default_template_dir=get_default_template_dir
+
+# Directoris with respective names will be created as per hikma.categories
+hikma.categories=projects,areas,resources,archives
+hikma.categories.fallback=resources
+hikma.categories.archives=archives
+hikma.categories.areas=areas
+
+hikma.item_types=email,meeting,journal,index-note,concept-note,task
+
+# {{current_context}} refer to output of get_current_context.
+hikma.item_types.dir.email={{current_context}}/emails
+hikma.item_types.dir.meeting={{current_context}}/meetings
+# To access other configurations in config, use {{configs[key]}}
+hikma.item_types.dir.journal=areas/journals
+# ${current_dir} refers to current directory
+hikma.item_types.dir.index-note={{current_dir}}
+hikma.item_types.dir.concept-note={{current_dir}}
+hikma.item_types.dir.task={{current_context}}/tasks
+
+hikma.item_types.filename.email=gen_email_name
+hikma.item_types.filename.meeting=gen_meeting_name
+hikma.item_types.filename.journal=gen_journal_name
+hikma.item_types.filename.index-note=gen_index_note_name
+hikma.item_types.filename.concept-note=gen_concept_note_name
+hikma.item_types.filename.task=gen_task_name
+
+hikma.item_types.template.email={{default_template_dir}}/email.org
+hikma.item_types.template.meeting={{default_template_dir}}/meeting.org
+hikma.item_types.template.journal={{default_template_dir}}/journal.org
+hikma.item_types.template.index-note={{default_template_dir}}/index-note.org
+hikma.item_types.template.concept-note={{default_template_dir}}/concept-note.org
+hikma.item_types.template.task={{default_template_dir}}/task.org
+
+hikma.formats.document=org
+hikma.formats.date_time=%Y%m%d%H%M%S
+hikma.formats.date=%Y%m%d
+
+
+
+hikma.commit_msg.root_init=Bismillah! Hikma root is initalized
