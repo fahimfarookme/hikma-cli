@@ -1,9 +1,9 @@
-#+title: Daily: %<%Y-%m-%d>
-#+filetags: :daily:
+#+title: Journal: %<%Y-%m-%d>
+#+filetags: :journal:
 #+date: %<%Y-%m-%d>
 
 :PROPERTIES:
-:TYPE: daily
+:TYPE: journal
 :CREATED: %<%Y-%m-%d %H:%M:%S>
 :UPDATED: %<%Y-%m-%d %H:%M:%S>
 :END:

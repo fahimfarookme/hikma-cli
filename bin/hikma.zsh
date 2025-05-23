@@ -1,7 +1,18 @@
 #!/bin/zsh
 
 # Absolute directory path of the script root directory
-declare -gx hikma_script_root="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")/.." && pwd)"
+# Prefer HIKMA_SCRIPT_ROOT from environment if set (by installer wrapper),
+# otherwise calculate it (for development).
+if [ -n "$HIKMA_SCRIPT_ROOT" ] && [ -d "$HIKMA_SCRIPT_ROOT" ]; then
+    # Use the HIKMA_SCRIPT_ROOT from the environment if it's set and is a directory.
+    # Ensure it's an absolute path (cd and pwd).
+    declare -gx hikma_script_root="$(cd "$HIKMA_SCRIPT_ROOT" && pwd)"
+else
+    # Fallback for development: calculate based on script's own location.
+    declare -gx hikma_script_root="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")/.." && pwd)"
+fi
+
+echo "hikma.zsh: Effective hikma_script_root is: ${hikma_script_root}" >&2
 
 declare -Agx command_template
 

@@ -1,0 +1,8 @@
+tap: true
+directories:
+  tests: test/unit
+  output: test/unit/_output
+  support: test/unit/_support
+time_limit: 0
+fail_fast: false
+allow_risky: false

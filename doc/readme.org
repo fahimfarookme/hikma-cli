@@ -1,0 +1,288 @@
+#+title: Hikma - A system for organzing knowledge and digital information
+#+filetags: :hikma:readme:
+#+created: 2025-05-20 00:10:54
+#+options: toc:t num:nil
+
+:PROPERTIES:
+:TYPE: permanent
+:AUTHORS: Fahim Farook
+:ROAM_REFS: 
+:STATUS: in-progress
+:CREATED: 2025-05-20 00:10:54
+:UPDATED: $(shell date +%Y-%m-%d %H:%M:%S)
+:END:
+
+* Hikma - A System for Organzing Digital Information
+
+Hikma (meaning "wisdom" in Arabic) is a Zsh-based command-line interface designed to help you structure and manage your digital information.
+
+Hikma helps you:
+- Organize content in a meaningful hierarchy (follows PARA by default).
+- Create standardized notes, tasks, and other documents from templates.
+- Sync and maintain version control with Git integration.
+
+** Philosophy & Core Concepts
+
+Hikma is built around a few key concepts and design principles:
+
+*** Core Concepts
+  - *Workspace*: The root directory containing all your knowledge.
+  - *Categories*: Top-level organizational units (e.g., projects, areas, resources, archives by default).
+  - *Concerns*: Specific projects, areas, or topics within a category.
+  - *Items*: Individual files like notes, tasks, meeting logs, emails, etc.
+
+*** Design Principles
+  - *Separation of Concerns*: Clear distinction between path determination for items, content preparation (template processing), and actual file creation.
+  - *Context Awareness*: Automatically detects the current category and concern based on the directory structure, simplifying commands.
+  - *Configuration-Driven*: Organization rules, item types, paths, and template behaviors are defined in an external configuration file (`.hikma_config`), allowing for customization without code changes.
+  - *Editor Agnosticism*: While designed with org-mode in mind, the core CLI functionality aims to work with any editor or environment by providing the necessary building blocks.
+  - *Git Integration*: Workspaces are initialized as Git repositories, and key operations are automatically committed to encourage versioning.
+  - *Modularity*: Functionality is organized into library scripts for better maintainability and extensibility.
+  - *Flexible Command Handling*: A regex-based command dispatcher maps user input to handler functions.
+
+** Key Features
+  - *Workspace Management*:
+    - Initialize structured knowledge workspaces with a predefined directory structure.
+    - Automatic Git initialization for version control of the workspace.
+    - Configurable category structure.
+  - *Concern Management*:
+    - Create, delete, archive, and move "concerns" (projects, areas, etc.) between categories.
+    - Automatically generates directory structures for new concerns from templates.
+  - *Item Creation & Management*:
+    - Generate new items (notes, tasks, meetings, journals, emails, etc.) from customizable org-mode templates.
+    - Context-aware file placement based on current directory or explicit commands.
+    - Consistent naming and formatting through configurable filename generators and templates.
+    - Resolve paths for new items.
+    - Retrieve processed template content with variable substitution.
+  - *Template System*:
+    - Customizable org-mode templates for different item types and concern structures.
+    - Dynamic variable substitution in templates using predefined and custom resolver functions.
+    - Extendable for new custom item types.
+
+** Prerequisites
+  - [[https://www.zsh.org/][Zsh shell]]
+  - [[https://git-scm.com/][Git]]
+  - Standard Unix Utilities: `sed`, `awk`, `date`, `mkdir`, `cp`, `rm`, `mv`, `cat`, `find`, `tr`, `head`, `grep`.
+  - (For Development/Build from source): `make` (optional, if using the provided Makefile), `shellcheck` (for linting), `pandoc` (if generating documentation from org-mode).
+
+** Installation
+
+*** Using Make (Recommended)
+   1. Clone the repository:
+      #+BEGIN_SRC bash
+      git clone https://github.com/fahimfarookme/hikma-cli.git
+      cd hikma-cli
+      #+END_SRC
+   2. Install (this example installs to `$HOME/.local`):
+      #+BEGIN_SRC bash
+      make install PREFIX=$HOME/.local
+      #+END_SRC
+      For a system-wide installation (e.g., to `/usr/local`), you might use:
+      #+BEGIN_SRC bash
+      sudo make install
+      #+END_SRC
+
+*** Manual Installation
+   1. Clone the repository:
+      #+BEGIN_SRC bash
+      git clone https://github.com/fahimfarookme/hikma-cli.git
+      #+END_SRC
+   2. Make the main script executable:
+      #+BEGIN_SRC bash
+      chmod +x hikma/bin/hikma.zsh
+      #+END_SRC
+   3. Create a symbolic link to a directory in your `$PATH`, or copy the script. Ensure the script can find its `lib/`, `templates/`, `doc/`, and `bin/command_template.txt` relative to its location (the `hikma_script_root` variable in `hikma.zsh` is designed for this).
+      #+BEGIN_SRC bash
+      # Example: Symlink to ~/.local/bin
+      mkdir -p $HOME/.local/bin
+      ln -s "$(pwd)/hikma/bin/hikma.zsh" $HOME/.local/bin/hikma
+      #+END_SRC
+      Ensure `$HOME/.local/bin` is in your `$PATH`.
+
+*** Verification
+   After installation, run the following command to verify:
+   #+BEGIN_SRC bash
+   hikma help
+   #+END_SRC
+
+** Getting Started
+
+*** 1. Initialize Your Workspace
+   Navigate to where you want to create your knowledge base and initialize Hikma:
+   #+BEGIN_SRC bash
+   # Example: cd ~/Documents
+   hikma init
+   #+END_SRC
+   This command sets up a directory structure (e.g., `projects/`, `areas/`, `resources/`, `archives/`), creates a `.hikma_config` file, and initializes a Git repository.
+
+*** 2. Create Your First Project (Concern)
+   #+BEGIN_SRC bash
+   hikma concern create projects my-first-project
+   #+END_SRC
+
+*** 3. Navigate and Create Content (Items)
+   #+BEGIN_SRC bash
+   cd projects/my-first-project # Navigate into the project context
+
+   # Create a task
+   hikma item create task --title "Outline project goals"
+
+   # Create a meeting note
+   hikma item create meeting --title "Initial planning session" --attendees "Team"
+   #+END_SRC
+
+** Command Reference
+
+*** Core Commands
+
+| Command                                  | Description                                               |
+|------------------------------------------+-----------------------------------------------------------|
+| ~hikma init~                             | Initialize a new Hikma workspace                          |
+| ~hikma help~                             | Display help information (from `doc/help.txt`)            |
+| ~hikma concern create <cat> <name>~      | Create a new concern (e.g., project) in specified category|
+| ~hikma concern delete <cat> <name>~      | Delete a concern (with confirmation)                      |
+| ~hikma concern mv <cat1> <name> <cat2>~  | Move a concern between categories                         |
+| ~hikma concern archive <cat> <name>~     | Archive a concern (moves to 'archives' category)          |
+| ~hikma item path <type>~                 | Get the fully resolved path for a new item                |
+| ~hikma item content <type> [--options]~  | Get processed template content for a new item             |
+| ~hikma item create <type> [--options]~   | Create a new item of specified type using a template      |
+| ~hikma submodule create <repo_url>~      | (Handler defined, likely for Git submodules)              |
+| ~hikma submodule delete <name>~          | (Handler defined, likely for Git submodules)              |
+
+*** Item Types
+Standard item types (configurable in `.hikma_config`) typically include:
+- ~email~: For logging or drafting email correspondence.
+- ~meeting~: For meeting minutes and agendas.
+- ~journal~: For daily journal entries.
+- ~index-note~: For creating index notes or maps of content (Zettelkasten-style).
+- ~concept-note~: For permanent or conceptual notes (Zettelkasten-style).
+- ~task~: For actionable tasks.
+
+*** Command Definition
+Commands are defined in `bin/command_template.txt`. Each line maps a regular expression to a handler function. For example:
+`^item create ([^ ]+) (.*)$:handle_item_create`
+This means `hikma item create <type> <options>` will call the Zsh function `handle_item_create` with `<type>` and `<options>` as arguments.
+
+** Configuration (`.hikma_config`)
+
+Hikma's behavior is primarily controlled by the `.hikma_config` file located in the root of your initialized workspace. This is a properties file (key=value).
+
+*** Important Configuration Options:
+
+**** Categories
+   Define top-level organizational directories:
+   #+BEGIN_SRC conf
+   hikma.categories=projects,areas,resources,archives
+   hikma.categories.fallback=resources
+   hikma.categories.archives=archives
+   #+END_SRC
+
+**** Item Types
+   Define supported item types:
+   #+BEGIN_SRC conf
+   hikma.item_types=email,meeting,journal,index-note,concept-note,task
+   #+END_SRC
+
+**** Item Directory Structure
+   Specify where items of different types are stored. Variables like `{{current_context}}` (e.g., `projects/my-project`) and `{{current_dir}}` can be used.
+   #+BEGIN_SRC conf
+   hikma.item_types.dir.email={{current_context}}/emails
+   hikma.item_types.dir.meeting={{current_context}}/meetings
+   hikma.item_types.dir.journal=areas/journal # Note: original file had 'areas/journals'
+   #+END_SRC
+
+**** Item Templates
+   Define the org-mode template file for each item type. `{{default_template_dir}}` usually points to the `templates/` directory in the Hikma installation.
+   #+BEGIN_SRC conf
+   hikma.item_types.template.email={{default_template_dir}}/email.org
+   hikma.item_types.template.meeting={{default_template_dir}}/meeting.org
+   #+END_SRC
+
+**** Filename Generation
+   Configure which Zsh functions (from `lib/filename_generators.zsh`) are used to generate filenames for each item type.
+   #+BEGIN_SRC conf
+   hikma.item_types.filename.email=gen_email_name
+   hikma.item_types.filename.meeting=gen_meeting_name
+   #+END_SRC
+
+**** Template Variables
+   Map variable names (e.g., `{{current_category}}`) used in templates or path definitions to Zsh functions (from `lib/variable_resolvers.zsh`) that provide their dynamic values.
+   #+BEGIN_SRC conf
+   hikma.variables.current_context=get_current_context
+   hikma.variables.date=get_date
+   #+END_SRC
+
+**** Formatting
+   #+BEGIN_SRC conf
+   hikma.formats.document=org
+   hikma.formats.date_time=%Y%m%d%H%M%S
+   hikma.formats.date=%Y%m%d
+   #+END_SRC
+
+** Architecture
+
+*** Directory Structure (of the `hikma-cli` tool itself)
+  - `bin/`: Contains the main executable `hikma.zsh` and the `command_template.txt` file.
+  - `lib/`: Houses modular Zsh library scripts providing core functionalities (e.g., `commons.zsh`, `error.zsh`, `handle_items.zsh`, `filename_generators.zsh`, `variable_resolvers.zsh`).
+  - `templates/`: Default org-mode templates for various item types and concern structures (e.g., `concern_project/`, `email.org`).
+  - `doc/`: Documentation files (e.g., `help.txt`, `item-design.org`, this README, man pages).
+  - `completion/`: Shell completion scripts (e.g., for Zsh).
+  - `script/`: Utility scripts for development, building, or testing (e.g., `colors.sh`, `check_deps.sh`).
+
+*** Key Components (Library Files in `lib/`)
+  - `hikma.zsh` (in `bin/`): Main entry point, loads modules, parses commands, and dispatches to handlers.
+  - `commons.zsh`: Common utility functions.
+  - `error.zsh`: Error handling, logging, and exit codes.
+  - `handle_workspace.zsh`: Functions for workspace initialization (`hikma init`).
+  - `handle_concerns.zsh`: Functions for managing concerns (create, delete, mv, archive).
+  - `handle_items.zsh`: Functions for managing items (path, content, create).
+  - `handle_help.zsh`: Displays help information.
+  - `filename_generators.zsh`: Functions to generate filenames for different item types.
+  - `variable_resolvers.zsh`: Functions that provide dynamic values for template variables.
+
+** Integration with Editors
+
+Hikma's design, particularly the separation of path determination (`item path`) and content preparation (`item content`) from file creation (`item create`), facilitates integration with various text editors and environments:
+
+*** Emacs/Org-mode
+   Hikma commands can be called from Emacs Lisp to generate file paths and pre-filled template content, which can then be seamlessly integrated into `org-capture` routines or other custom workflows.
+
+*** Visual Studio Code
+   VS Code extensions can be developed to call `hikma-cli` commands, providing a GUI or command palette interface for managing your Hikma workspace and creating items.
+
+*** Vim/Neovim
+   Vim/Neovim plugins or custom commands can leverage `hikma-cli` to automate the creation and organization of notes and tasks within the Hikma structure.
+
+** Development
+
+*** Contributing
+   Contributions are welcome! If you'd like to contribute, please consider the following:
+   1. Fork the repository.
+   2. Create a new branch for your feature or bug fix (e.g., `git checkout -b feature/my-new-feature` or `fix/issue-number`).
+   3. Make your changes, adhering to the existing code style.
+   4. Add tests for your changes if applicable.
+   5. Ensure all tests pass (e.g., `make test`).
+   6. Ensure linters pass (e.g., `make lint`).
+   7. Submit a pull request with a clear description of your changes.
+
+*** Build Process (if using the provided Makefile)
+   The project may use a `Makefile` to automate common development tasks:
+   #+BEGIN_SRC bash
+   # Run linters (e.g., shellcheck, zsh -n)
+   make lint
+
+   # Generate documentation (e.g., README.md from README.org, man pages)
+   make docs
+
+   # Run automated tests (if a test suite is set up)
+   make test
+
+   # Create a distributable package (e.g., a tarball)
+   make package
+   #+END_SRC
+
+** License
+TODO
+
+** Acknowledgments
+- [[https://fortelabs.com/blog/para/]PARA Method for Organizing Your Digital Life]

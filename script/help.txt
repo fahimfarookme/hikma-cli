@@ -1,0 +1,24 @@
+
+$(GREEN)$(PROJECT_NAME) version $(VERSION)$(RESET)
+
+$(YELLOW)Usage: make [target]$(RESET)
+
+$(YELLOW)Main targets:$(RESET)
+  all              Run check-deps, lint, docs, test, and package (default)
+  install          Install $(PROJECT_NAME) to system (PREFIX=$(PREFIX))
+  uninstall        Remove $(PROJECT_NAME) from system
+  package          Create distribution package ($(PACKAGE_TGZ))
+  clean            Remove generated files
+
+$(YELLOW)Development targets:$(RESET)
+  check-deps       Check for required dependencies
+  lint             Check code quality with shellcheck
+  docs             Generate documentation from org-mode sources
+  test             Run all tests
+  test-unit        Run unit tests only
+  test-integration Run integration tests only
+  bump-version     Increase version number and create git tag
+
+$(YELLOW)Installation options:$(RESET)
+  make install PREFIX=/custom/path  # Install to custom location
+  make install PREFIX=$$HOME/.local # Install to user's home
